@@ -3,6 +3,8 @@ import readline from 'readline'
 import { OpenClaudeSdk } from '../src/sdk/OpenClaudeSdk.js'
 import type { OpenClaudeSdkRequest } from '../src/sdk/contracts.js'
 
+const MAX_PREVIEW_LENGTH = 400
+
 function getArg(flag: string): string | undefined {
   const index = process.argv.indexOf(flag)
   if (index < 0) return undefined
@@ -19,8 +21,8 @@ function usage(): never {
 function sanitizePreview(value: unknown): string {
   const json = JSON.stringify(value)
   const normalized = json.replace(/[\u0000-\u001f\u007f-\u009f]/g, '')
-  if (normalized.length > 400) {
-    return `${normalized.slice(0, 400)}…`
+  if (normalized.length > MAX_PREVIEW_LENGTH) {
+    return `${normalized.slice(0, MAX_PREVIEW_LENGTH)}…`
   }
   return normalized
 }
