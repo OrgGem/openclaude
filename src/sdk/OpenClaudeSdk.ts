@@ -1,14 +1,17 @@
 import { mkdir, writeFile } from 'fs/promises'
 import { join, resolve } from 'path'
 import { randomUUID } from 'crypto'
-import { QueryEngine } from 'src/QueryEngine.js'
-import type { CanUseToolFn } from 'src/hooks/useCanUseTool.js'
-import { getDefaultAppState } from 'src/state/AppStateStore.js'
-import type { AppState } from 'src/state/AppState.js'
-import { getTools } from 'src/tools.js'
-import { FileStateCache, READ_FILE_STATE_CACHE_SIZE } from 'src/utils/fileStateCache.js'
-import type { PermissionDecision } from 'src/types/permissions.js'
-import type { Tool } from 'src/Tool.js'
+import { QueryEngine } from '../QueryEngine.js'
+import type { CanUseToolFn } from '../hooks/useCanUseTool.js'
+import { getDefaultAppState } from '../state/AppStateStore.js'
+import type { AppState } from '../state/AppState.js'
+import { getTools } from '../tools.js'
+import {
+  FileStateCache,
+  READ_FILE_STATE_CACHE_SIZE,
+} from '../utils/fileStateCache.js'
+import type { PermissionDecision } from '../types/permissions.js'
+import type { Tool } from '../Tool.js'
 import {
   type OpenClaudeSdkManifest,
   type OpenClaudeSdkRequest,
@@ -253,6 +256,8 @@ export class OpenClaudeSdkSession {
     }
 
     if (writeManifestJson) {
+      // Keep files as payload artifacts only; manifest is the index and does not
+      // list itself to avoid self-referential metadata.
       const manifest: OpenClaudeSdkManifest = {
         sdkVersion: SDK_VERSION,
         sessionId: this.sessionId,
