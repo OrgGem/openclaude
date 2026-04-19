@@ -88,7 +88,8 @@ namespace OpenClaude.SdkWrapper
             var waitForExitTask = Task.Run(() =>
             {
                 process.WaitForExit();
-                return process.ExitCode;
+                var exitCode = process.ExitCode;
+                return exitCode;
             });
             var cancellationTcs = new TaskCompletionSource<bool>();
 
@@ -112,8 +113,21 @@ namespace OpenClaude.SdkWrapper
                 }
             }
 
-            var stdout = await stdoutTask.ConfigureAwait(false);
-            var stderr = await stderrTask.ConfigureAwait(false);
+            string stdout;
+            string stderr;
+            try
+            {
+                stdout = await stdoutTask.ConfigureAwait(false);
+                stderr = await stderrTask.ConfigureAwait(false);
+            }
+            catch (IOException ex)
+            {
+                throw new InvalidOperationException("Failed to read OpenClaude SDK CLI process output streams.", ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new InvalidOperationException("OpenClaude SDK CLI process output streams were disposed unexpectedly.", ex);
+            }
 
             var response = new OpenClaudeSdkRunResponse
             {
