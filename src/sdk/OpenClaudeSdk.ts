@@ -260,16 +260,15 @@ export class OpenClaudeSdkSession {
     }
 
     if (writeManifestJson) {
-      // Keep files as payload artifacts only; manifest is the index and does not
-      // list itself to avoid self-referential metadata.
-      const payloadFiles = files.filter(file => file !== 'manifest.json')
+      // Keep files as payload artifacts only; manifest is the index and is not
+      // inserted into this payload list.
       const manifest: OpenClaudeSdkManifest = {
         sdkVersion: SDK_VERSION,
         sessionId: this.sessionId,
         turnId,
         createdAt: new Date().toISOString(),
         outputFolderPath,
-        files: payloadFiles,
+        files,
       }
       await writeFile(
         join(outputFolderPath, 'manifest.json'),

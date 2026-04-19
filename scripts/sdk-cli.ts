@@ -57,15 +57,22 @@ async function main() {
   const requestRaw = readFileSync(requestFile, 'utf-8')
   const request = JSON.parse(requestRaw) as OpenClaudeSdkRequest
 
-  if (request.permission?.mode === 'interactive' && !request.permission.onRequest) {
-    request.permission.onRequest = async req =>
-      askPermission(
-        `Approve ${req.toolName} with input ${sanitizePreview(req.toolInput)}`,
-      )
-  }
+  const effectiveRequest: OpenClaudeSdkRequest =
+    request.permission?.mode === 'interactive' && !request.permission.onRequest
+      ? {
+          ...request,
+          permission: {
+            ...request.permission,
+            onRequest: async req =>
+              askPermission(
+                `Approve ${req.toolName} with input ${sanitizePreview(req.toolInput)}`,
+              ),
+          },
+        }
+      : request
 
   const sdk = new OpenClaudeSdk()
-  const result = await sdk.run(request)
+  const result = await sdk.run(effectiveRequest)
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`)
 }
 
