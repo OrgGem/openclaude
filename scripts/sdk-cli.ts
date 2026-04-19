@@ -20,6 +20,11 @@ function usage(): never {
   process.exit(1)
 }
 
+/**
+ * Builds a safe single-line preview for terminal permission prompts.
+ * Removes control characters to avoid terminal control-sequence rendering
+ * and truncates long payloads to a bounded length.
+ */
 function sanitizePreview(value: unknown): string {
   const json = JSON.stringify(value)
   const normalized = json.replace(/[\u0000-\u001f\u007f-\u009f]/g, '')

@@ -23,13 +23,13 @@ const DEFAULT_OUTPUT_DIR_NAME = '.openclaude-sdk-output'
 const SDK_FILE_CACHE_MAX_BYTES = 25 * 1024 * 1024
 
 function formatFolderTimestamp(date: Date): string {
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  const hh = String(date.getHours()).padStart(2, '0')
-  const mm = String(date.getMinutes()).padStart(2, '0')
-  const ss = String(date.getSeconds()).padStart(2, '0')
-  return `${y}${m}${d}-${hh}${mm}${ss}`
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  return `${year}${month}${day}-${hours}${minutes}${seconds}`
 }
 
 function createAllowDecision(): PermissionDecision {
@@ -262,13 +262,14 @@ export class OpenClaudeSdkSession {
     if (writeManifestJson) {
       // Keep files as payload artifacts only; manifest is the index and does not
       // list itself to avoid self-referential metadata.
+      const payloadFiles = files.filter(file => file !== 'manifest.json')
       const manifest: OpenClaudeSdkManifest = {
         sdkVersion: SDK_VERSION,
         sessionId: this.sessionId,
         turnId,
         createdAt: new Date().toISOString(),
         outputFolderPath,
-        files,
+        files: payloadFiles,
       }
       await writeFile(
         join(outputFolderPath, 'manifest.json'),
