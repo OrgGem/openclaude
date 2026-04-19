@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>OpenClaude.SdkWrapper</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>OrgGem</Authors>
+    <Company>OrgGem</Company>
+    <Description>.NET wrapper for OpenClaude SDK CLI request/response execution.</Description>
+    <PackageTags>openclaude;llm;sdk;wrapper</PackageTags>
+    <RepositoryUrl>https://github.com/OrgGem/openclaude</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/OrgGem/openclaude</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

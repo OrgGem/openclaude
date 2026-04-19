@@ -274,6 +274,19 @@ npm run dev:sdk:cli -- --request /absolute/path/request.json
 
 Request schema is defined by `OpenClaudeSdkRequest` in `src/sdk/contracts.ts`.
 
+### .NET wrapper (NuGet-ready)
+
+For Windows/.NET integrations (including .NET Framework 4.6), a multi-target wrapper project is included:
+
+- Project: `dotnet/OpenClaude.SdkWrapper/OpenClaude.SdkWrapper.csproj`
+- Targets: `net46;netstandard2.0`
+
+Build/package:
+
+```bash
+dotnet pack dotnet/OpenClaude.SdkWrapper/OpenClaude.SdkWrapper.csproj -c Release
+```
+
 ---
 
 ## Source Build And Local Development
