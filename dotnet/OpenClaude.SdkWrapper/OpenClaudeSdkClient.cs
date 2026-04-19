@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading;
@@ -101,8 +102,9 @@ namespace OpenClaude.SdkWrapper
                         process.Kill();
                     }
                 }
-                catch
+                catch (InvalidOperationException)
                 {
+                    // Process can exit between HasExited check and Kill().
                 }
                 exitTcs.TrySetCanceled();
             }))
@@ -134,9 +136,9 @@ namespace OpenClaude.SdkWrapper
                 {
                     response.Result = ReadJson<OpenClaudeSdkResult>(trimmed);
                 }
-                catch
+                catch (SerializationException)
                 {
-                    // Keep raw output in StandardOutput for callers when payload is not JSON.
+                    // Keep raw output in StandardOutput for callers when payload is not valid contract JSON.
                 }
             }
 
@@ -177,8 +179,13 @@ namespace OpenClaude.SdkWrapper
                     Directory.Delete(path, true);
                 }
             }
-            catch
+            catch (IOException)
             {
+                // Best-effort cleanup; temp folders may still be locked by antivirus/indexers.
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Best-effort cleanup; caller does not rely on temp folder deletion.
             }
         }
     }
