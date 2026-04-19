@@ -242,8 +242,8 @@ npm run dev:grpc:cli
 
 OpenClaude now includes an SDK facade that reuses the existing agent core (`QueryEngine`) for one-shot and multi-turn programmatic control.
 
-- SDK source: `/home/runner/work/openclaude/openclaude/src/sdk/OpenClaudeSdk.ts`
-- Contracts: `/home/runner/work/openclaude/openclaude/src/sdk/contracts.ts`
+- SDK source: `src/sdk/OpenClaudeSdk.ts`
+- Contracts: `src/sdk/contracts.ts`
 
 ### What it provides
 

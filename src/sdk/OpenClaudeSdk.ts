@@ -216,7 +216,7 @@ export class OpenClaudeSdkSession {
     )
     const folderName =
       request.outputPolicy?.folderName ??
-      `${new Date().toISOString().replaceAll(':', '-')}-${this.sessionId}-${turnId}`
+      `${Date.now()}-${turnId.slice(0, 8)}`
     const outputFolderPath = join(baseDirectory, folderName)
     await mkdir(outputFolderPath, { recursive: true })
 
