@@ -10,3 +10,6 @@ GEMINI.md
 package-lock.json
 /.claude
 coverage/
+**/bin/
+**/obj/
+*.nupkg

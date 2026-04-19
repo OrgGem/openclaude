@@ -1,9 +1,0 @@
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/bin/Release/net46/OpenClaude.SdkWrapper.dll
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/bin/Release/net46/OpenClaude.SdkWrapper.pdb
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.GeneratedMSBuildEditorConfig.editorconfig
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.AssemblyInfoInputs.cache
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.AssemblyInfo.cs
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.csproj.CoreCompileInputs.cache
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.sourcelink.json
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.dll
-/home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/obj/Release/net46/OpenClaude.SdkWrapper.pdb

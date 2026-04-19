@@ -1,8 +1,0 @@
-is_global = true
-build_property.RootNamespace = OpenClaude.SdkWrapper
-build_property.ProjectDir = /home/runner/work/openclaude/openclaude/dotnet/OpenClaude.SdkWrapper/
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.CsWinRTUseWindowsUIXamlProjections = false
-build_property.EffectiveAnalysisLevelStyle = 
-build_property.EnableCodeStyleSeverity = 
