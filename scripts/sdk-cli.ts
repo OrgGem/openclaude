@@ -27,6 +27,8 @@ function usage(): never {
  */
 function sanitizePreview(value: unknown): string {
   const json = JSON.stringify(value)
+  // Strip ASCII control bytes (C0 + DEL + C1) to avoid rendering terminal
+  // control sequences from untrusted tool input previews.
   const normalized = json.replace(/[\u0000-\u001f\u007f-\u009f]/g, '')
   if (normalized.length > MAX_PREVIEW_LENGTH) {
     return `${normalized.slice(0, MAX_PREVIEW_LENGTH)}…`

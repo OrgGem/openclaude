@@ -116,7 +116,14 @@ export class OpenClaudeSdkSession {
             }
             structuredResult = msg.structured_output
           } else {
-            status = msg.subtype === 'error_during_execution' ? 'error' : 'interrupted'
+            const subtype = String(msg.subtype)
+            if (subtype === 'interrupted') {
+              status = 'interrupted'
+            } else if (subtype.startsWith('error')) {
+              status = 'error'
+            } else {
+              status = 'interrupted'
+            }
             error = msg.subtype
           }
           continue
