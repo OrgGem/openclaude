@@ -238,6 +238,44 @@ npm run dev:grpc:cli
 
 ---
 
+## SDK Facade + Custom Output CLI
+
+OpenClaude now includes an SDK facade that reuses the existing agent core (`QueryEngine`) for one-shot and multi-turn programmatic control.
+
+- SDK source: `/home/runner/work/openclaude/openclaude/src/sdk/OpenClaudeSdk.ts`
+- Contracts: `/home/runner/work/openclaude/openclaude/src/sdk/contracts.ts`
+
+### What it provides
+
+- Reuses CLI core agent flow (tools, permission checks, model loop)
+- Session model: create/resume in-process sessions
+- Permission modes:
+  - `interactive` (callback-driven)
+  - `auto-allow`
+  - `auto-deny`
+- Stable output artifacts per run:
+  - always returns `outputFolderPath`
+  - writes `result.json` (default)
+  - writes `manifest.json` (default)
+
+### Custom SDK CLI wrapper
+
+A separate headless CLI wrapper is included for contract-first integrations (for example, Excel plugin/macro callers):
+
+```bash
+bun run scripts/sdk-cli.ts --request /absolute/path/request.json
+```
+
+You can also run:
+
+```bash
+npm run dev:sdk:cli -- --request /absolute/path/request.json
+```
+
+Request schema is defined by `OpenClaudeSdkRequest` in `src/sdk/contracts.ts`.
+
+---
+
 ## Source Build And Local Development
 
 ```bash
