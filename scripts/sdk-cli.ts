@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import readline from 'readline'
 import { OpenClaudeSdk } from '../src/sdk/OpenClaudeSdk.js'
 import type { OpenClaudeSdkRequest } from '../src/sdk/contracts.js'
@@ -31,6 +31,10 @@ async function askPermission(question: string): Promise<boolean> {
 async function main() {
   const requestFile = getArg('--request')
   if (!requestFile) usage()
+  if (!existsSync(requestFile)) {
+    process.stderr.write(`Request file not found: ${requestFile}\n`)
+    process.exit(1)
+  }
 
   const requestRaw = readFileSync(requestFile, 'utf-8')
   const request = JSON.parse(requestRaw) as OpenClaudeSdkRequest

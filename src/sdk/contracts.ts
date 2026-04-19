@@ -1,5 +1,8 @@
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs'
-import type { NonNullableUsage, SDKMessage } from 'src/entrypoints/agentSdkTypes.js'
+import type {
+  NonNullableUsage,
+  SDKMessage,
+} from '../entrypoints/agentSdkTypes.js'
 
 export type OpenClaudeSdkPermissionMode =
   | 'interactive'

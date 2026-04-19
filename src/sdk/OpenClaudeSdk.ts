@@ -216,7 +216,7 @@ export class OpenClaudeSdkSession {
     )
     const folderName =
       request.outputPolicy?.folderName ??
-      `${Date.now()}-${turnId.slice(0, 8)}`
+      `${new Date().toISOString().replaceAll(':', '-')}-${turnId.slice(0, 8)}`
     const outputFolderPath = join(baseDirectory, folderName)
     await mkdir(outputFolderPath, { recursive: true })
 
@@ -243,6 +243,7 @@ export class OpenClaudeSdkSession {
     }
 
     if (writeManifestJson) {
+      files.push('manifest.json')
       const manifest: OpenClaudeSdkManifest = {
         sdkVersion: SDK_VERSION,
         sessionId: this.sessionId,
