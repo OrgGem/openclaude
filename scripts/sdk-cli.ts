@@ -16,6 +16,15 @@ function usage(): never {
   process.exit(1)
 }
 
+function sanitizePreview(value: unknown): string {
+  const json = JSON.stringify(value)
+  const normalized = json.replace(/[\u0000-\u001f\u007f-\u009f]/g, '')
+  if (normalized.length > 400) {
+    return `${normalized.slice(0, 400)}…`
+  }
+  return normalized
+}
+
 async function askPermission(question: string): Promise<boolean> {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -42,7 +51,7 @@ async function main() {
   if (request.permission?.mode === 'interactive' && !request.permission.onRequest) {
     request.permission.onRequest = async req =>
       askPermission(
-        `Approve ${req.toolName} with input ${JSON.stringify(req.toolInput)}`,
+        `Approve ${req.toolName} with input ${sanitizePreview(req.toolInput)}`,
       )
   }
 

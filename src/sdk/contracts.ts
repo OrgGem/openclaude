@@ -24,7 +24,7 @@ export type OpenClaudeSdkPermissionHandler = (
 export type OpenClaudeSdkOutputPolicy = {
   /**
    * Base directory where SDK run folders are created.
-   * Default: <cwd>/.openclaude-sdk-output
+   * Default: <session workingDirectory>/.openclaude-sdk-output
    */
   baseDirectory?: string
   /**

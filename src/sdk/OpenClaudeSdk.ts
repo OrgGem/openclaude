@@ -18,6 +18,16 @@ import {
 const SDK_VERSION = '0.1.0'
 const DEFAULT_OUTPUT_DIR_NAME = '.openclaude-sdk-output'
 
+function formatFolderTimestamp(date: Date): string {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  const hh = String(date.getHours()).padStart(2, '0')
+  const mm = String(date.getMinutes()).padStart(2, '0')
+  const ss = String(date.getSeconds()).padStart(2, '0')
+  return `${y}${m}${d}-${hh}${mm}${ss}`
+}
+
 function createAllowDecision(): PermissionDecision {
   return {
     behavior: 'allow',
@@ -216,7 +226,7 @@ export class OpenClaudeSdkSession {
     )
     const folderName =
       request.outputPolicy?.folderName ??
-      `${new Date().toISOString().replaceAll(':', '-')}-${turnId.slice(0, 8)}`
+      `${formatFolderTimestamp(new Date())}-${turnId.slice(0, 8)}`
     const outputFolderPath = join(baseDirectory, folderName)
     await mkdir(outputFolderPath, { recursive: true })
 
@@ -243,7 +253,6 @@ export class OpenClaudeSdkSession {
     }
 
     if (writeManifestJson) {
-      files.push('manifest.json')
       const manifest: OpenClaudeSdkManifest = {
         sdkVersion: SDK_VERSION,
         sessionId: this.sessionId,
