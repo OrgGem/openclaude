@@ -78,42 +78,35 @@ namespace OpenClaude.SdkWrapper
                 EnableRaisingEvents = true,
             };
 
-            var exitTcs = new TaskCompletionSource<int>();
-            process.Exited += (sender, args) => exitTcs.TrySetResult(process.ExitCode);
-
             if (!process.Start())
             {
                 throw new InvalidOperationException("Failed to start process: " + fileName);
             }
-            if (process.HasExited)
-            {
-                exitTcs.TrySetResult(process.ExitCode);
-            }
 
             var stdoutTask = process.StandardOutput.ReadToEndAsync();
             var stderrTask = process.StandardError.ReadToEndAsync();
+            var waitForExitTask = Task.Run(() =>
+            {
+                process.WaitForExit();
+                return process.ExitCode;
+            });
+            var cancellationTcs = new TaskCompletionSource<bool>();
 
             using (cancellationToken.Register(() =>
             {
                 try
                 {
-                    if (!process.HasExited)
-                    {
-                        process.Kill();
-                    }
+                    process.Kill();
                 }
                 catch (InvalidOperationException)
                 {
-                    // Process can exit between HasExited check and Kill().
+                    // Process may already have exited by the time Kill() is invoked.
                 }
-                exitTcs.TrySetCanceled();
+                cancellationTcs.TrySetResult(true);
             }))
             {
-                try
-                {
-                    await exitTcs.Task.ConfigureAwait(false);
-                }
-                catch (TaskCanceledException)
+                var completedTask = await Task.WhenAny(waitForExitTask, cancellationTcs.Task).ConfigureAwait(false);
+                if (completedTask == cancellationTcs.Task)
                 {
                     throw new OperationCanceledException(cancellationToken);
                 }
@@ -144,8 +137,9 @@ namespace OpenClaude.SdkWrapper
 
             if (response.ExitCode != 0)
             {
+                var stderrPreview = Truncate(response.StandardError, 400);
                 throw new InvalidOperationException(
-                    "OpenClaude SDK CLI process failed with exit code " + response.ExitCode + ": " + response.StandardError);
+                    "OpenClaude SDK CLI process failed with exit code " + response.ExitCode + ". stderr: " + stderrPreview);
             }
 
             return response;
@@ -187,6 +181,12 @@ namespace OpenClaude.SdkWrapper
             {
                 // Best-effort cleanup; caller does not rely on temp folder deletion.
             }
+        }
+
+        private static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return string.Empty;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
         }
     }
 }
