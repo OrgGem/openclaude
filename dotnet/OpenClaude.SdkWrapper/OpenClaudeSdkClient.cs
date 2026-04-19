@@ -84,6 +84,10 @@ namespace OpenClaude.SdkWrapper
             {
                 throw new InvalidOperationException("Failed to start process: " + fileName);
             }
+            if (process.HasExited)
+            {
+                exitTcs.TrySetResult(process.ExitCode);
+            }
 
             var stdoutTask = process.StandardOutput.ReadToEndAsync();
             var stderrTask = process.StandardError.ReadToEndAsync();
@@ -100,9 +104,17 @@ namespace OpenClaude.SdkWrapper
                 catch
                 {
                 }
+                exitTcs.TrySetCanceled();
             }))
             {
-                await exitTcs.Task.ConfigureAwait(false);
+                try
+                {
+                    await exitTcs.Task.ConfigureAwait(false);
+                }
+                catch (TaskCanceledException)
+                {
+                    throw new OperationCanceledException(cancellationToken);
+                }
             }
 
             var stdout = await stdoutTask.ConfigureAwait(false);
