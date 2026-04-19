@@ -20,6 +20,7 @@ import {
 
 const SDK_VERSION = '0.1.0'
 const DEFAULT_OUTPUT_DIR_NAME = '.openclaude-sdk-output'
+const SDK_FILE_CACHE_MAX_BYTES = 25 * 1024 * 1024
 
 function formatFolderTimestamp(date: Date): string {
   const y = date.getFullYear()
@@ -63,7 +64,10 @@ export class OpenClaudeSdkSession {
   constructor(init: SessionInit) {
     this.sessionId = randomUUID()
     this.appState = getDefaultAppState()
-    this.fileCache = new FileStateCache(READ_FILE_STATE_CACHE_SIZE, 25 * 1024 * 1024)
+    this.fileCache = new FileStateCache(
+      READ_FILE_STATE_CACHE_SIZE,
+      SDK_FILE_CACHE_MAX_BYTES,
+    )
     this.workingDirectory = resolve(init.workingDirectory)
     this.engine = this.createEngine(init)
   }

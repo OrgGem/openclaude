@@ -3,6 +3,8 @@ import readline from 'readline'
 import { OpenClaudeSdk } from '../src/sdk/OpenClaudeSdk.js'
 import type { OpenClaudeSdkRequest } from '../src/sdk/contracts.js'
 
+// Keep prompts readable in terminal permission flows while avoiding large,
+// unbounded tool-input dumps in interactive mode.
 const MAX_PREVIEW_LENGTH = 400
 
 function getArg(flag: string): string | undefined {
